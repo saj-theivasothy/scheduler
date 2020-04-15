@@ -4,7 +4,6 @@ import Classnames from "classnames"
 import "components/Button.scss";
 
 export default function Button(props) {
-   console.log(props.disabled)
 
    let buttonClass = Classnames('button', {
       'button--confirm': props.confirm,
