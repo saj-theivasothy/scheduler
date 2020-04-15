@@ -178,4 +178,19 @@ storiesOf("Appointment", module)
         onCancel={action("onCancel")}
     />
     ))
-  
+    .add("Appointment Empty", () => (
+      <>
+        <Appointment id={1} time="12pm" />
+        <Appointment id="last" time="1pm" />
+      </>
+    ))
+    .add("Appointment Booked", () => (
+      <>
+        <Appointment
+          id={1}
+          time="12pm"
+          interview={{ student: "Lydia Miller-Jones", interviewer }}
+        />
+        <Appointment id="last" time="1pm" />
+      </>
+    ))
