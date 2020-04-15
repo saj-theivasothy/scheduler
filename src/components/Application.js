@@ -2,9 +2,11 @@ import React, { useState } from "react";
 
 import "components/Application.scss";
 import DayList from "./DayList";
+import InterviewerList from "./InterviewerList";
 
 export default function Application(props) {
   const [day, setDay] = useState("Monday");
+  const [interviewer, setInterviewer] = useState();
 
   const days = [
     {
@@ -24,6 +26,14 @@ export default function Application(props) {
     },
   ];
 
+  const interviewers = [
+    { id: 1, name: "Sylvia Palmer", avatar: "https://i.imgur.com/LpaY82x.png" },
+    { id: 2, name: "Tori Malcolm", avatar: "https://i.imgur.com/Nmx0Qxo.png" },
+    { id: 3, name: "Mildred Nazir", avatar: "https://i.imgur.com/T2WwVfS.png" },
+    { id: 4, name: "Cohana Roy", avatar: "https://i.imgur.com/FK8V841.jpg" },
+    { id: 5, name: "Sven Jones", avatar: "https://i.imgur.com/twYrpay.jpg" },
+  ];
+
   return (
     <main className="layout">
       <section className="sidebar">
@@ -34,11 +44,7 @@ export default function Application(props) {
         />
         <hr className="sidebar__separator sidebar--centered" />
         <nav className="sidebar__menu">
-          <DayList
-            days={days}
-            day={day}
-            setDay={setDay}
-          />
+          <DayList {...{ days, day, setDay }} />
         </nav>
         <img
           className="sidebar__lhl sidebar--centered"
@@ -47,7 +53,7 @@ export default function Application(props) {
         />
       </section>
       <section className="schedule">
-        {/* Replace this with the schedule elements durint the "The Scheduler" activity. */}
+        <InterviewerList {...{interviewers, interviewer, setInterviewer}}/>
       </section>
     </main>
   );
