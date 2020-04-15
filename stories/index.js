@@ -15,7 +15,7 @@ import Header from "components/appointment/Header";
 import Empty from "components/appointment/Empty";
 import Show from "components/appointment/Show";
 import Confirm from "components/appointment/Confirm";
-import { act } from "@testing-library/react";
+import Status from "components/appointment/Status";
 
 storiesOf("Button", module)
   .addParameters({
@@ -156,3 +156,4 @@ storiesOf("Appointment", module)
       onCancel={action("onCancel")}
     />
   ))
+  .add("Status", () => <Status message="Deleting" />)
