@@ -4,8 +4,7 @@ import Axios from "axios";
 import "components/Application.scss";
 import DayList from "./DayList";
 import InterviewerList from "./InterviewerList";
-import Appointment from "components/appointment"
-
+import Appointment from "components/appointment";
 
 const appointments = [
   {
@@ -21,8 +20,8 @@ const appointments = [
         id: 1,
         name: "Sylvia Palmer",
         avatar: "https://i.imgur.com/LpaY82x.png",
-      }
-    }
+      },
+    },
   },
   {
     id: 3,
@@ -33,8 +32,8 @@ const appointments = [
         id: 3,
         name: "Mildred Nazir",
         avatar: "https://i.imgur.com/T2WwVfS.png",
-      }
-    }
+      },
+    },
   },
   {
     id: 4,
@@ -49,24 +48,38 @@ const appointments = [
         id: 5,
         name: "Sven Jones",
         avatar: "https://i.imgur.com/twYrpay.jpg",
-      }
-    }
+      },
+    },
   },
 ];
 export default function Application(props) {
-  const [day, setDay] = useState("Monday");
-  const [days, addDays] = useState([]);
+  
+  const [ state, setState ] = useState({
+    day: "Monday",
+    days: [],
+    appointments: {},
+  });
 
-  const appointmentsList = appointments.map(appointment => {
-    return <Appointment key={appointment.id} {...appointment} />
-  })
+  const { day, days, appointments } = state;
+
+  const setDay = (day) => setState({ ...state, day });
+
+  const appointmentsList = Object.values(appointments).map((appointment) => {
+    return <Appointment key={appointment.id} {...appointment} />;
+  });
 
   useEffect(() => {
-    Axios.get("http://localhost:8001/api/days")
-    .then(response => addDays(response.data))
-    .catch(err => console.error(err));
-  }, [])
-  
+    Promise.all([
+      Axios.get("http://localhost:8001/api/days"),
+      Axios.get("http://localhost:8001/api/appointments")
+    ])
+    .then((all) => {
+      setState(prev => ({days: all[0].data, appointments: all[1].data}))
+      
+    })
+    .catch((err) => console.error(err));
+  }, []);
+
   return (
     <main className="layout">
       <section className="sidebar">
@@ -92,4 +105,3 @@ export default function Application(props) {
     </main>
   );
 }
- 
