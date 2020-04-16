@@ -6,7 +6,6 @@ import DayList from "./DayList";
 import Appointment from "components/appointment";
 import getAppointmentsForDay from "helpers/selectors";
 
-
 export default function Application(props) {
   const [state, setState] = useState({
     day: "Monday",
@@ -18,22 +17,21 @@ export default function Application(props) {
 
   const setDay = (day) => setState({ ...state, day });
 
-  
-  useEffect(() => 
-  {Promise.all([
-    Axios.get("http://localhost:8001/api/days"),
-    Axios.get("http://localhost:8001/api/appointments"),
-  ])
-  .then((all) => {
-    setState((prev) => ({days: all[0].data, appointments: all[1].data }));
-  })
-      .catch((err) => console.error(err)); 
-    }, []);
-    
-    const appointmentsForDay = getAppointmentsForDay(state, day)
-      const appointmentsList = appointmentsForDay.map((appointment) => {
-        return <Appointment key={appointment.id} {...appointment} />;
-      });
+  useEffect(() => {
+    Promise.all([
+      Axios.get("http://localhost:8001/api/days"),
+      Axios.get("http://localhost:8001/api/appointments"),
+    ])
+      .then((all) => {
+        setState((prev) => ({ days: all[0].data, appointments: all[1].data }));
+      })
+      .catch((err) => console.error(err));
+  }, []);
+
+  const appointmentsForDay = getAppointmentsForDay(state, day);
+  const appointmentsList = appointmentsForDay.map((appointment) => {
+    return <Appointment key={appointment.id} {...appointment} />;
+  });
 
   return (
     <main className="layout">
