@@ -11,6 +11,7 @@ export default function Application(props) {
     day: "Monday",
     days: [],
     appointments: {},
+    interviewers: {}
   });
 
   const { day, days } = state;
@@ -21,15 +22,16 @@ export default function Application(props) {
     Promise.all([
       Axios.get("http://localhost:8001/api/days"),
       Axios.get("http://localhost:8001/api/appointments"),
+      Axios.get("http://localhost:8001/api/interviewers")
     ])
       .then((all) => {
-        setState((prev) => ({ days: all[0].data, appointments: all[1].data }));
+        setState((prev) => ({ days: all[0].data, appointments: all[1].data, interviewers: all[2].data }));
       })
       .catch((err) => console.error(err));
   }, []);
 
   const appointmentsForDay = getAppointmentsForDay(state, day);
-  const appointmentsList = appointmentsForDay.map((appointment) => {
+  const schedule = appointmentsForDay.map((appointment) => {
     return <Appointment key={appointment.id} {...appointment} />;
   });
 
@@ -52,7 +54,7 @@ export default function Application(props) {
         />
       </section>
       <section className="schedule">
-        {appointmentsList}
+        {schedule}
         <Appointment key="last" time="5pm" />
       </section>
     </main>
