@@ -5,7 +5,6 @@ import "./InterviewerListItem.scss";
 
 
 export default function (props) {
-  const hidden = !props.selected && "interviewers__item--text--hidden";
   const interviewerClass = Classnames("interviewers__item", {
     "interviewers__item--selected": props.selected,
   });
@@ -20,7 +19,7 @@ export default function (props) {
         src={props.avatar}
         alt={props.name}
       />
-      <span className={hidden}>{props.name}</span>
+      {props.selected && props.name}
     </li>
   );
 }
