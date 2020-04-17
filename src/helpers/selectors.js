@@ -30,5 +30,23 @@ export function getInterview (state, interview) {
   }
 } 
 
+export function getInterviewersForDay(state, dayOfWeek) {
+  if (state.days.length === 0) return [];
+  
+  let interviewers;
+  for (const day of state.days) {
+    if (day.name === dayOfWeek) {
+      interviewers = day.interviewers;
+    } 
+  }
 
-// export function getInterviewersForDay (state)
+  if (!interviewers) return [];
+  
+  const interviewersForDay = [];
+  interviewers.forEach((interviewer) => {
+    if(interviewer in state.interviewers) {
+      interviewersForDay.push(state.interviewers[interviewer]);
+    }
+  })
+  return interviewersForDay;
+}
