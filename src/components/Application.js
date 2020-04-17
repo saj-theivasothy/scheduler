@@ -4,7 +4,11 @@ import Axios from "axios";
 import "components/Application.scss";
 import DayList from "./DayList";
 import Appointment from "components/appointment";
-import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "helpers/selectors";
+import {
+  getAppointmentsForDay,
+  getInterview,
+  getInterviewersForDay,
+} from "helpers/selectors";
 
 export default function Application(props) {
   const [state, setState] = useState({
@@ -13,7 +17,7 @@ export default function Application(props) {
     appointments: {},
     interviewers: {},
   });
-  
+
   const { day, days } = state;
 
   const setDay = (day) => setState({ ...state, day });
@@ -37,28 +41,60 @@ export default function Application(props) {
   const appointmentsForDay = getAppointmentsForDay(state, day);
   const interviewersForDay = getInterviewersForDay(state, day);
 
-  function bookInterview(id, interview) {
+  function bookInterview(appointmentId, interview) {
     const appointment = {
-      ...state.appointments[id],
-      interview: { ...interview }
-    };    
+      ...state.appointments[appointmentId],
+      interview: { ...interview },
+    };
     const appointments = {
       ...state.appointments,
-      [id]: appointment
-    }
+      [appointmentId]: appointment,
+    };
 
-    return Axios.put(`http://localhost:8001/api/appointments/${id}`, {interview: interview})
-    .then((res) => {
-      setState({...state, appointments: appointments})
-      return res;
-    })
-    .catch(err => err)
+    return Axios.put(
+      `http://localhost:8001/api/appointments/${appointmentId}`,
+      { interview: interview }
+    )
+      .then((res) => {
+        setState({ ...state, appointments: appointments });
+        return res;
+      })
+      .catch((err) => err);
+  }
+
+  function cancelInterview(appointmentId) {
+    const appointment = {
+      ...state.appointments[appointmentId],
+      interview: null,
+    };
+    const appointments = {
+      ...state.appointments,
+      [appointmentId]: appointment,
+    };
+
+    return Axios.delete(
+      `http://localhost:8001/api/appointments/${appointmentId}`,
+      { interview: null }
+    )
+      .then((res) => {
+        setState({ ...state, appointments: appointments });
+        return res;
+      })
+      .catch((err) => err);
   }
 
   const schedule = appointmentsForDay.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
     const appointmentWithInterview = { ...appointment, interview };
-    return <Appointment key={appointment.id} {...appointmentWithInterview} interviewers={interviewersForDay} bookInterview={bookInterview}/>;
+    return (
+      <Appointment
+        key={appointment.id}
+        {...appointmentWithInterview}
+        interviewers={interviewersForDay}
+        bookInterview={bookInterview}
+        cancelInterview={cancelInterview}
+      />
+    );
   });
 
   return (
