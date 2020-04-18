@@ -8,9 +8,9 @@ export default function useApplicationData() {
     appointments: {},
     interviewers: {},
   });
-  
+
   const setDay = (day) => setState({ ...state, day });
-  
+
   useEffect(() => {
     Promise.all([
       Axios.get("http://localhost:8001/api/days"),
@@ -26,7 +26,18 @@ export default function useApplicationData() {
       })
       .catch((err) => console.error(err));
   }, []);
-  
+
+  function updateSpots(action) {
+    const days = state.days.map((day) => {
+      if (day.name === state.day) {
+        const updatedSpots = action === "save" ? day.spots - 1 : day.spots + 1;
+        return { ...day, spots: updatedSpots };
+      }
+      return day;
+    });
+    return days;
+  }
+
   function bookInterview(appointmentId, interview) {
     const appointment = {
       ...state.appointments[appointmentId],
@@ -36,20 +47,21 @@ export default function useApplicationData() {
       ...state.appointments,
       [appointmentId]: appointment,
     };
-  
+
     return Axios.put(
       `http://localhost:8001/api/appointments/${appointmentId}`,
       { interview: interview }
     )
       .then((res) => {
-        setState({ ...state, appointments: appointments });
+        const days = updateSpots("save");
+        setState({ ...state, appointments, days });
         return res;
       })
       .catch((err) => {
         throw Error(err);
       });
   }
-  
+
   function cancelInterview(appointmentId) {
     const appointment = {
       ...state.appointments[appointmentId],
@@ -59,19 +71,20 @@ export default function useApplicationData() {
       ...state.appointments,
       [appointmentId]: appointment,
     };
-  
+
     return Axios.delete(
       `http://localhost:8001/api/appointments/${appointmentId}`,
       { interview: null }
     )
       .then((res) => {
-        setState({ ...state, appointments: appointments });
+        const days = updateSpots("delete");
+        setState({ ...state, appointments, days });
         return res;
       })
       .catch((err) => {
         throw Error(err);
       });
   }
-  
-  return {state, setDay, bookInterview, cancelInterview}
+
+  return { state, setDay, bookInterview, cancelInterview };
 }
