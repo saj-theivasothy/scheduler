@@ -21,4 +21,4 @@ describe("Appointment component", () => {
   it("renders without crashing", () => {
     render(<Application />);
   });
-})
+});

@@ -6,8 +6,8 @@ import InterviewerListItem from "./InterviewerListItem";
 
 InterviewerList.propTypes = {
   interviewer: PropTypes.number,
-  setInterviewer: PropTypes.func.isRequired
-}
+  setInterviewer: PropTypes.func.isRequired,
+};
 
 const handleSetInterviewer = (selected, interviewerId, setInterviewer) => {
   selected ? setInterviewer() : setInterviewer(interviewerId);

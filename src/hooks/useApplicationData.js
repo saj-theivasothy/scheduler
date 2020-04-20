@@ -26,7 +26,6 @@ export default function useApplicationData() {
         }));
       })
       .catch((err) => console.error(err));
- 
   }, []);
 
   function updateSpots(action) {

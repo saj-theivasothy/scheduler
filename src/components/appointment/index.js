@@ -9,7 +9,7 @@ import useVisualMode from "hooks/useVisualMode.js";
 import Form from "components/appointment/Form";
 import Status from "./Status";
 import Confirm from "./Confirm";
-import Error from "./Error"
+import Error from "./Error";
 
 export default function Appointment(props) {
   const EMPTY = "EMPTY";
@@ -38,9 +38,9 @@ export default function Appointment(props) {
       .bookInterview(props.id, interview)
       .then(() => transition(SHOW))
       .catch((err) => {
-        if(err){
-          transition(ERROR_SAVE, true)
-        } 
+        if (err) {
+          transition(ERROR_SAVE, true);
+        }
       });
   }
 
@@ -81,15 +81,26 @@ export default function Appointment(props) {
         />
       )}
       {mode === EDIT && (
-      <Form 
-        name={props.interview.student}
-        interviewers={props.interviewers}
-        interviewer={props.interview.interviewer.id}
-        onSave={save}
-        onCancel={() => back()} />
+        <Form
+          name={props.interview.student}
+          interviewers={props.interviewers}
+          interviewer={props.interview.interviewer.id}
+          onSave={save}
+          onCancel={() => back()}
+        />
       )}
-      {mode === ERROR_SAVE && <Error message="Error creating interview, please try again" onClose={() => back()}/>}
-      {mode === ERROR_DELETE && <Error message="Error cancelling interview, please try again" onClose={() => back()}/>}
+      {mode === ERROR_SAVE && (
+        <Error
+          message="Error creating interview, please try again"
+          onClose={() => back()}
+        />
+      )}
+      {mode === ERROR_DELETE && (
+        <Error
+          message="Error cancelling interview, please try again"
+          onClose={() => back()}
+        />
+      )}
     </article>
   );
 }

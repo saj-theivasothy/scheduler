@@ -163,34 +163,34 @@ storiesOf("Appointment", module)
     <Error message="Could not delete appointment" onClose={action("onClose")} />
   ))
   .add("Edit Form", () => (
-  <Form 
+    <Form
       name="David Miller"
       interviewers={interviewers}
       interviewer={3}
       onSave={action("onSave")}
       onCancel={action("onCancel")}
-  />
+    />
   ))
   .add("Create Form", () => (
-    <Form 
-        interviewers={interviewers}
-        onSave={action("onSave")}
-        onCancel={action("onCancel")}
+    <Form
+      interviewers={interviewers}
+      onSave={action("onSave")}
+      onCancel={action("onCancel")}
     />
-    ))
-    .add("Appointment Empty", () => (
-      <>
-        <Appointment id={1} time="12pm" />
-        <Appointment id="last" time="1pm" />
-      </>
-    ))
-    .add("Appointment Booked", () => (
-      <>
-        <Appointment
-          id={1}
-          time="12pm"
-          interview={{ student: "Lydia Miller-Jones", interviewer }}
-        />
-        <Appointment id="last" time="1pm" />
-      </>
-    ))
+  ))
+  .add("Appointment Empty", () => (
+    <>
+      <Appointment id={1} time="12pm" />
+      <Appointment id="last" time="1pm" />
+    </>
+  ))
+  .add("Appointment Booked", () => (
+    <>
+      <Appointment
+        id={1}
+        time="12pm"
+        interview={{ student: "Lydia Miller-Jones", interviewer }}
+      />
+      <Appointment id="last" time="1pm" />
+    </>
+  ));
