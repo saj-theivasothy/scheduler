@@ -19,14 +19,14 @@ export default function useApplicationData() {
     ])
       .then((all) => {
         setState((prev) => ({
-          day: state.day,
+          ...prev,
           days: all[0].data,
           appointments: all[1].data,
           interviewers: all[2].data,
         }));
       })
       .catch((err) => console.error(err));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+ 
   }, []);
 
   function updateSpots(action) {
