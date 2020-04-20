@@ -46,8 +46,8 @@ export default function Application(props) {
           alt="Interview Scheduler"
         />
         <hr className="sidebar__separator sidebar--centered" />
-        <nav className="sidebar__menu">
-          <DayList {...{ days, day, setDay }} />
+        <nav className="sidebar__menu" >
+          <DayList {...{days, day, setDay }} />
         </nav>
         <img
           className="sidebar__lhl sidebar--centered"
