@@ -23,7 +23,7 @@ export function getAppointmentsForDay(state, dayOfWeek) {
 export function getInterview (state, interview) {
   if(!interview) return null;
 
-  const interviewerId = interview.interviewer.toString();
+  const interviewerId = interview.interviewer;
   if(interviewerId in state.interviewers) {
     const interviewWithInterviewer = {...interview, interviewer: state.interviewers[interviewerId]};
     return interviewWithInterviewer;
