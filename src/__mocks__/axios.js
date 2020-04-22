@@ -1,5 +1,5 @@
 export default {
-  get: jest.fn(url => {
+  get: jest.fn((url) => {
     if (url === "http://localhost:8001/api/days") {
       return Promise.resolve({
         status: 200,
@@ -9,8 +9,7 @@ export default {
     }
 
     if (url === "http://localhost:8001/api/appointments") {
-      return Promise
-      .resolve({
+      return Promise.resolve({
         status: 200,
         statusText: "OK",
         data: fixtures.appointments,
@@ -18,11 +17,19 @@ export default {
     }
 
     if (url === "http://localhost:8001/api/interviewers") {
-      return Promise
-      .resolve({
+      return Promise.resolve({
         status: 200,
         statusText: "OK",
         data: fixtures.interviewers,
+      });
+    }
+  }),
+
+  put: jest.fn((url) => {
+    if (url === "http://localhost:8001/api/appointments/1") {
+      return Promise.resolve({
+        status: 200,
+        statusText: "No Content",
       });
     }
   }),
@@ -82,4 +89,3 @@ const fixtures = {
     },
   },
 };
-
