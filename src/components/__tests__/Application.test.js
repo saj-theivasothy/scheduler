@@ -6,7 +6,10 @@ import {
   waitForElement,
   fireEvent,
   getByText,
-  prettyDOM
+  prettyDOM,
+  getAllByTestId,
+  getByAltText,
+  getByPlaceholderText,
 } from "@testing-library/react";
 
 import Application from "components/Application";
@@ -25,10 +28,20 @@ describe("Application", () => {
   });
 
   it("loads data, books an interview and reduces the spots remaining for the first day by 1", async () => {
-    const {container} = render(<Application />)
+    const { container } = render(<Application />);
 
-    await waitForElement(() => getByText(container, "Archie Cohen"))
+    await waitForElement(() => getByText(container, "Archie Cohen"));
 
-    console.log(prettyDOM(container))
+    const appointments = getAllByTestId(container, "appointment");
+    const appointment = appointments[0];
+    fireEvent.click(getByAltText(appointment, "Add"));
+
+    fireEvent.change(getByPlaceholderText(appointment, "Enter Student Name"), {
+      target: { value: "Dave Smith" },
+    });
+
+    fireEvent.click(getByAltText(appointment, "Sylvia Palmer"));
+
+    fireEvent.click(getByText(appointment, "Save"));
   });
 });
