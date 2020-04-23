@@ -13,9 +13,9 @@ export default function useApplicationData() {
 
   useEffect(() => {
     Promise.all([
-      Axios.get("http://localhost:8001/api/days"),
-      Axios.get("http://localhost:8001/api/appointments"),
-      Axios.get("http://localhost:8001/api/interviewers"),
+      Axios.get("/api/days"),
+      Axios.get("/api/appointments"),
+      Axios.get("/api/interviewers"),
     ])
       .then((all) => {
         setState((prev) => ({
@@ -55,7 +55,7 @@ export default function useApplicationData() {
     };
 
     return Axios.put(
-      `http://localhost:8001/api/appointments/${appointmentId}`,
+      `/api/appointments/${appointmentId}`,
       { interview: interview }
     )
       .then((res) => {
@@ -79,7 +79,7 @@ export default function useApplicationData() {
     };
 
     return Axios.delete(
-      `http://localhost:8001/api/appointments/${appointmentId}`,
+      `/api/appointments/${appointmentId}`,
       { interview: null }
     )
       .then((res) => {
