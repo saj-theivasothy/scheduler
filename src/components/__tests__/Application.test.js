@@ -34,7 +34,6 @@ describe("Application", () => {
 
   it("loads data, books an interview and reduces the spots remaining for the first day by 1", async () => {
     const { container } = render(<Application />);
-
     await waitForElement(() => getByText(container, "Archie Cohen"));
 
     const appointments = getAllByTestId(container, "appointment");
@@ -46,7 +45,7 @@ describe("Application", () => {
     });
 
     fireEvent.click(getByAltText(appointment, "Sylvia Palmer"));
-
+    
     fireEvent.click(getByText(appointment, "Save"));
     expect(getByText(appointment, "SAVING")).toBeInTheDocument();
 
@@ -56,7 +55,7 @@ describe("Application", () => {
     const day = getAllByTestId(container, "day").find((day) =>
       queryByText(day, "Monday")
     );
-
+    
     expect(queryByText(day, "no spots remaining")).toBeInTheDocument();
   });
 
