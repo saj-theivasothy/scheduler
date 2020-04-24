@@ -30,8 +30,8 @@ export default function Form(props) {
       return;
     }
     setError("");
-    const edit = props.name ? true : false;
-    props.onSave(name, interviewer, edit);
+  
+    props.onSave(name, interviewer);
   }
 
   return (
