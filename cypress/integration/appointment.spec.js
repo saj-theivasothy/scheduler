@@ -19,9 +19,9 @@ describe("Appointments", () => {
     cy.contains("SAVING").should("exist");
     cy.contains("SAVING").should("not.exist");
     
-    cy.get("[data-testid=day").first().contains("no spots remaining");
     cy.contains(".appointment__card--show", "Lydia Miller-Jones");
     cy.contains(".appointment__card--show", "Sylvia Palmer");
+    cy.get("[data-testid=day").first().contains("no spots remaining");
   });
 
   it("should edit an interview", () => {
@@ -36,9 +36,9 @@ describe("Appointments", () => {
     cy.contains("SAVING").should("exist");
     cy.contains("SAVING").should("not.exist");
 
-    cy.get("[data-testid=day").first().contains("1 spot remaining");
     cy.contains(".appointment__card--show", "David Smith");
     cy.contains(".appointment__card--show", "Tori Malcolm");
+    cy.get("[data-testid=day").first().contains("1 spot remaining");
   });
 
   it("should cancel an interview", () => {
