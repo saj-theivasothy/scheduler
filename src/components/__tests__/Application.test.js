@@ -8,7 +8,6 @@ import {
   waitForElement,
   fireEvent,
   getByText,
-  prettyDOM,
   getAllByTestId,
   getByAltText,
   getByPlaceholderText,
@@ -32,23 +31,22 @@ describe("Application", () => {
     });
   });
 
-  it("loads data, books an interview and reduces the spots remaining for the first day by 1", async () => {
+  it.skip("loads data, books an interview and reduces the spots remaining for the first day by 1", async () => {
     const { container } = render(<Application />);
     await waitForElement(() => getByText(container, "Archie Cohen"));
-
     const appointments = getAllByTestId(container, "appointment");
     const appointment = appointments[0];
     fireEvent.click(getByAltText(appointment, "Add"));
-
+    
     fireEvent.change(getByPlaceholderText(appointment, "Enter Student Name"), {
       target: { value: "Dave Smith" },
     });
-
+    
     fireEvent.click(getByAltText(appointment, "Sylvia Palmer"));
     
     fireEvent.click(getByText(appointment, "Save"));
     expect(getByText(appointment, "SAVING")).toBeInTheDocument();
-
+    
     await waitForElement(() => queryByText(appointment, "Dave Smith"));
     expect(queryByText(appointment, "Dave Smith")).toBeInTheDocument();
 
@@ -59,7 +57,7 @@ describe("Application", () => {
     expect(queryByText(day, "no spots remaining")).toBeInTheDocument();
   });
 
-  it("loads data, cancels an interview and increases the spots remaining for Monday by 1", async () => {
+  it.skip("loads data, cancels an interview and increases the spots remaining for Monday by 1", async () => {
     const { container } = render(<Application />);
 
     await waitForElement(() => getByText(container, "Archie Cohen"));
@@ -85,7 +83,7 @@ describe("Application", () => {
     expect(queryByText(day, "2 spots remaining")).toBeInTheDocument();
   });
 
-  it("loads data, edits an interview and keeps the spots remaining for Monday the same", async () => {
+  it.skip("loads data, edits an interview and keeps the spots remaining for Monday the same", async () => {
     const { container } = render(<Application />);
 
     await waitForElement(() => getByText(container, "Archie Cohen"));
