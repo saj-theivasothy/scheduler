@@ -1,54 +1,58 @@
-export function getAppointmentsForDay(state, dayOfWeek) {
-  if (state.days.length === 0) return [];
+export function getAppointmentsForDay(days, appointments, dayOfWeek) {
+  if (days.length === 0) return [];
 
-  let appointments;
-  for (const day of state.days) {
+  let appointmentIdsForDay;
+
+  for (const day of days) {
     if (day.name === dayOfWeek) {
-      appointments = day.appointments;
+      appointmentIdsForDay = day.appointments;
     }
   }
 
-  if (!appointments) return [];
+  if (!appointmentIdsForDay) return [];
 
   const appointmentsForDay = [];
-  appointments.forEach((appointment) => {
-    if (appointment in state.appointments) {
-      appointmentsForDay.push(state.appointments[appointment]);
+
+  appointmentIdsForDay.forEach((appointmentId) => {
+    if (appointmentId in appointments) {
+      appointmentsForDay.push(appointments[appointmentId]);
     }
   });
 
   return appointmentsForDay;
 }
 
-export function getInterview(state, interview) {
+export function getInterview(interviewers, interview) {
   if (!interview) return null;
 
   const interviewerId = interview.interviewer;
-  if (interviewerId in state.interviewers) {
+  if (interviewerId in interviewers) {
     const interviewWithInterviewer = {
       ...interview,
-      interviewer: state.interviewers[interviewerId],
+      interviewer: interviewers[interviewerId],
     };
     return interviewWithInterviewer;
   }
 }
 
-export function getInterviewersForDay(state, dayOfWeek) {
-  if (state.days.length === 0) return [];
+export function getInterviewersForDay(days, interviewers, dayOfWeek) {
+  console.log(days)
+  console.log(interviewers)
+  if (days.length === 0) return [];
 
-  let interviewers;
-  for (const day of state.days) {
+  let interviewerIdsForDay;
+  for (const day of days) {
     if (day.name === dayOfWeek) {
-      interviewers = day.interviewers;
+      interviewerIdsForDay = day.interviewers;
     }
   }
 
-  if (!interviewers) return [];
+  if (!interviewerIdsForDay) return [];
 
   const interviewersForDay = [];
-  interviewers.forEach((interviewer) => {
-    if (interviewer in state.interviewers) {
-      interviewersForDay.push(state.interviewers[interviewer]);
+  interviewerIdsForDay.forEach((interviewerId) => {
+    if (interviewerId in interviewers) {
+      interviewersForDay.push(interviewers[interviewerId]);
     }
   });
   return interviewersForDay;
