@@ -9,6 +9,7 @@ import Application from "components/Application";
 
 if (process.env.REACT_APP_API_BASE_URL) {
   axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL;
+  WebSocket.defaults.baseURL = process.env.REACT_APP_WEBSOCKET_URL;
 } else {
   axios.defaults.baseURL = 'http://localhost:8001';
 }
