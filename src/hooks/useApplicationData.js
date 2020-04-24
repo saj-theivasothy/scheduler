@@ -9,9 +9,15 @@ const DELETE = "DELETE";
 const SAVE = "SAVE";
 const EDIT = "EDIT";
 
-function updateSpots(state, operation) {
-  const days = state.days.map((day) => {
-    if (day.name === state.day) {
+/** 
+ * finds the given day in the days obj, 
+ * updates the spots for that day,
+ * adds the day to the days obj,
+ * returns the days obj
+ */
+function updateSpots(days, dayName, operation) {
+  const updatedDays = days.map((day) => {
+    if (day.name === dayName) {
       const updatedSpots =
         operation === DELETE
           ? day.spots + 1
@@ -23,7 +29,7 @@ function updateSpots(state, operation) {
     }
     return day;
   });
-  return days;
+  return updatedDays;
 }
 
 /**
@@ -50,10 +56,12 @@ function getOperation(appointments, appointmentId, interview) {
 }
 
 function reducer(state, action) {
+  // updates the day state to the day received from dispatch
   if (action.type === SET_DAY) {
     return { ...state, day: action.day };
   }
 
+  // updates the days, appointments and interviewers state with the data received from dispatch
   if (action.type === SET_APPLICATION_DATA) {
     return {
       ...state,
@@ -63,14 +71,18 @@ function reducer(state, action) {
     };
   }
 
-  if (action.type === SET_INTERVIEW) {
+  /**
+   * updates the appointments state using the interview data received from dispatch
+   * updates the spots in the days state using the data received from dispatch 
+   */
+   if (action.type === SET_INTERVIEW) {
     let appointments = state.appointments;
     const appointmentId = action.appointmentId;
     const interview = action.interview ? { ...action.interview } : null;
     
     const operation = getOperation(appointments, appointmentId, interview);
 
-    const days = updateSpots(state, operation);
+    const updatedDays = updateSpots(state.days, state.day, operation);
     
     const appointment = {
       ...state.appointments[appointmentId],
@@ -82,7 +94,7 @@ function reducer(state, action) {
       [appointmentId]: appointment,
     };
 
-    return { ...state, appointments: appointments, days: days };
+    return { ...state, appointments: appointments, days: updatedDays };
   }
 }
 
@@ -118,6 +130,8 @@ export default function useApplicationData() {
         } 
       };
 
+      // makes requests to the endpoints on page load and 
+      // calls the dispatch function with the data received
       Promise.all([
         Axios.get("/api/days"),
         Axios.get("/api/appointments"),
