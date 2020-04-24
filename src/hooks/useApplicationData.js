@@ -1,23 +1,25 @@
 import { useReducer, useEffect } from "react";
 import Axios from "axios";
 
-
 const SET_DAY = "SET_DAY";
 const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
 const SET_INTERVIEW = "SET_INTERVIEW";
 
 const DELETE = "DELETE";
 const SAVE = "SAVE";
+const EDIT = "EDIT";
 
-function updateSpots(state, action = null) {
+function updateSpots(state, action) {
   const days = state.days.map((day) => {
     if (day.name === state.day) {
+
       const updatedSpots =
-      action === SAVE
-      ? day.spots - 1
-      : action === DELETE
-      ? day.spots + 1
-      : day.spots;
+        action === DELETE
+          ? day.spots + 1
+          : action === SAVE
+          ? day.spots - 1
+          : day.spots;
+
       return { ...day, spots: updatedSpots };
     }
     return day;
@@ -26,6 +28,19 @@ function updateSpots(state, action = null) {
 }
 
 function reducer(state, action) {
+  const appointments = state.appointments;
+  let operation;
+  for (const appointment in appointments) {
+    const booking = appointments[appointment];
+
+    if (action.appointmentId === booking.id && booking.interview) {
+      if (Object.keys(booking.interview).length > 0 && action.interview) {
+        operation = EDIT;
+      } else if (Object.keys(booking.interview).length === 0) {
+        operation = SAVE;
+      }
+    }
+  }
   if (action.type === SET_DAY) {
     return { ...state, day: action.day };
   }
@@ -42,17 +57,20 @@ function reducer(state, action) {
       ...state.appointments[action.appointmentId],
       interview: { ...action.interview },
     };
-    
+
     const appointments = {
       ...state.appointments,
       [action.appointmentId]: appointment,
     };
-    
-    const days = action.edit
-    ? updateSpots(state)
-    : action.DELETE
-    ? updateSpots(state, DELETE)
-    : updateSpots(state, SAVE);
+
+    const days = action.DELETE
+      ? updateSpots(state, DELETE)
+      : operation === SAVE
+      ? updateSpots(state, SAVE)
+      : operation === EDIT
+      ? updateSpots(state, EDIT)
+      : state.days;
+
     return { ...state, appointments: appointments, days: days };
   }
 }
@@ -64,16 +82,34 @@ export default function useApplicationData() {
     appointments: {},
     interviewers: {},
   });
-  
+
   const setDay = (day) => dispatch({ type: SET_DAY, day });
-  
+
   useEffect(() => {
     const webSocket = new WebSocket("ws://localhost:8001");
     webSocket.onopen = () => {
       webSocket.onmessage = (event) => {
-        console.log("Message received", event.data);
+        const message = JSON.parse(event.data);
+
+        if (message.type === SET_INTERVIEW && message.interview) {
+
+          dispatch({
+            type: SET_INTERVIEW,
+            appointmentId: message.id,
+            interview: message.interview,
+          });
+        } else if (message.type === SET_INTERVIEW && !message.interview) {
+
+          dispatch({
+            type: SET_INTERVIEW,
+            appointmentId: message.id,
+            interview: message.interview,
+            DELETE,
+          });
+        }
+
       };
-      console.log("connection opened");
+
       Promise.all([
         Axios.get("/api/days"),
         Axios.get("/api/appointments"),
@@ -95,18 +131,11 @@ export default function useApplicationData() {
     };
   }, []);
 
-  function bookInterview(appointmentId, interview, edit) {
+  function bookInterview(appointmentId, interview) {
     return Axios.put(`/api/appointments/${appointmentId}`, {
       interview: interview,
     })
       .then((res) => {
-        dispatch({
-          type: SET_INTERVIEW,
-          appointmentId,
-          interview,
-          edit,
-        });
-        console.log(state.days)
         return res;
       })
       .catch((err) => {
@@ -119,12 +148,6 @@ export default function useApplicationData() {
       interview: null,
     })
       .then((res) => {
-        dispatch({
-          type: SET_INTERVIEW,
-          appointmentId,
-          interview: null,
-          DELETE,
-        });
         return res;
       })
       .catch((err) => {
