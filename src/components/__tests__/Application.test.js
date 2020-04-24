@@ -21,7 +21,7 @@ import { queryByAltText, getByDisplayValue } from "@testing-library/dom";
 afterEach(cleanup);
 
 describe("Application", () => {
-  it("defaults to Monday and changes the schedule when a new day is selected", () => {
+  it.skip("defaults to Monday and changes the schedule when a new day is selected", () => {
     const { getByText } = render(<Application />);
 
     return waitForElement(() => getByText("Monday")).then(() => {
@@ -111,7 +111,7 @@ describe("Application", () => {
     expect(queryByText(day, "1 spot remaining")).toBeInTheDocument();
   });
 
-  it("shows the save error when failing to save an appointment", async () => {
+  it.skip("shows the save error when failing to save an appointment", async () => {
     axios.put.mockRejectedValueOnce();
 
     const { container } = render(<Application />);
@@ -143,7 +143,7 @@ describe("Application", () => {
     expect(queryByText(day, "1 spot remaining")).toBeInTheDocument();
   });
 
-  it("shows the save error when failing to cancel an appointment", async () => {
+  it.skip("shows the save error when failing to cancel an appointment", async () => {
     axios.delete.mockRejectedValueOnce();
 
     const { container } = render(<Application />);
