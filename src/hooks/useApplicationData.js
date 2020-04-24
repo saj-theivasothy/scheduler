@@ -104,20 +104,18 @@ export default function useApplicationData() {
       webSocket.onmessage = (event) => {
         const message = JSON.parse(event.data);
 
-        if (message.type === SET_INTERVIEW && message.interview) {
+        /** 
+         * @desc when a message is received, 
+         *  the the dispatch action will be called with the
+         *  data received from the websocket server passed as the action object
+         */
+        if (message.type === SET_INTERVIEW) {
           dispatch({
             type: SET_INTERVIEW,
             appointmentId: message.id,
             interview: message.interview,
           });
-
-        } else if (message.type === SET_INTERVIEW && !message.interview) {
-          dispatch({
-            type: SET_INTERVIEW,
-            appointmentId: message.id,
-            interview: message.interview
-          });
-        }
+        } 
       };
 
       Promise.all([
