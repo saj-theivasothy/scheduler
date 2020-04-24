@@ -9,14 +9,13 @@ const DELETE = "DELETE";
 const SAVE = "SAVE";
 const EDIT = "EDIT";
 
-function updateSpots(state, action) {
+function updateSpots(state, operation) {
   const days = state.days.map((day) => {
     if (day.name === state.day) {
-
       const updatedSpots =
-        action === DELETE
+        operation === DELETE
           ? day.spots + 1
-          : action === SAVE
+          : operation === SAVE
           ? day.spots - 1
           : day.spots;
 
@@ -27,23 +26,34 @@ function updateSpots(state, action) {
   return days;
 }
 
-function reducer(state, action) {
-  const appointments = state.appointments;
-  let operation;
+/**
+ * @desc compares the interview obj and the interview obj from the corresponding appointment
+ * @param obj appointments - all the appointments for a specific day
+ * @param number appointmentId - id for the the new/updated/deleted appointment
+ * @param obj interview - contains the student and interviewer id
+ * @return EDIT/SAVE/DELETE - depending on whether the two objects are equal or not
+ */
+function getOperation(appointments, appointmentId, interview) {
   for (const appointment in appointments) {
     const booking = appointments[appointment];
 
-    if (action.appointmentId === booking.id && booking.interview) {
-      if (Object.keys(booking.interview).length > 0 && action.interview) {
-        operation = EDIT;
-      } else if (Object.keys(booking.interview).length === 0) {
-        operation = SAVE;
-      }
+    if (appointmentId === booking.id) {
+      if (booking.interview && interview) {
+        return EDIT;
+      } else if (interview && !booking.interview) {
+        return SAVE;
+      } else if(booking.interview && !interview) {
+        return DELETE;
     }
+    } 
   }
+}
+
+function reducer(state, action) {
   if (action.type === SET_DAY) {
     return { ...state, day: action.day };
   }
+
   if (action.type === SET_APPLICATION_DATA) {
     return {
       ...state,
@@ -52,24 +62,25 @@ function reducer(state, action) {
       interviewers: action.interviewers,
     };
   }
+
   if (action.type === SET_INTERVIEW) {
+    let appointments = state.appointments;
+    const appointmentId = action.appointmentId;
+    const interview = action.interview ? { ...action.interview } : null;
+    
+    const operation = getOperation(appointments, appointmentId, interview);
+
+    const days = updateSpots(state, operation);
+    
     const appointment = {
-      ...state.appointments[action.appointmentId],
-      interview: { ...action.interview },
+      ...state.appointments[appointmentId],
+      interview,
     };
 
-    const appointments = {
+    appointments = {
       ...state.appointments,
-      [action.appointmentId]: appointment,
+      [appointmentId]: appointment,
     };
-
-    const days = action.DELETE
-      ? updateSpots(state, DELETE)
-      : operation === SAVE
-      ? updateSpots(state, SAVE)
-      : operation === EDIT
-      ? updateSpots(state, EDIT)
-      : state.days;
 
     return { ...state, appointments: appointments, days: days };
   }
@@ -86,28 +97,27 @@ export default function useApplicationData() {
   const setDay = (day) => dispatch({ type: SET_DAY, day });
 
   useEffect(() => {
+    // opens websocket connection on page load
     const webSocket = new WebSocket("ws://localhost:8001");
+
     webSocket.onopen = () => {
       webSocket.onmessage = (event) => {
         const message = JSON.parse(event.data);
 
         if (message.type === SET_INTERVIEW && message.interview) {
-
           dispatch({
             type: SET_INTERVIEW,
             appointmentId: message.id,
             interview: message.interview,
           });
-        } else if (message.type === SET_INTERVIEW && !message.interview) {
 
+        } else if (message.type === SET_INTERVIEW && !message.interview) {
           dispatch({
             type: SET_INTERVIEW,
             appointmentId: message.id,
-            interview: message.interview,
-            DELETE,
+            interview: message.interview
           });
         }
-
       };
 
       Promise.all([
