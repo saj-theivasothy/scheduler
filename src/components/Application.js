@@ -25,8 +25,13 @@ export default function Application(props) {
 
   // returns an array of appointment components
   const schedule = appointmentsForDay.map((appointment) => {
+    /**
+     * for each appointment, the interviewer obj stored in the appointment is updated
+     * to include interviewer name and avatar url instead of just interviewer id
+     */
     const interview = getInterview(state.interviewers, appointment.interview);
     const appointmentWithInterview = { ...appointment, interview };
+
     return (
       <Appointment
         key={appointment.id}
