@@ -26,6 +26,7 @@ export default function Appointment(props) {
     props.interview ? SHOW : EMPTY
   );
 
+  // the mode is updated, when the state is updated by the data received from the websocket server
   useEffect(() => {
     if (!props.interview && mode === SHOW) {
       transition(EMPTY);
@@ -36,7 +37,7 @@ export default function Appointment(props) {
     }
   }, [props.interview, transition, mode]);
 
-  function save(name, interviewer) {
+  function handleSave(name, interviewer) {
     const interview = {
       student: name,
       interviewer,
@@ -54,7 +55,7 @@ export default function Appointment(props) {
       });
   }
 
-  function deleteInterview(appointmentId) {
+  function handleDelete(appointmentId) {
     transition(DELETING);
 
     props
@@ -78,7 +79,7 @@ export default function Appointment(props) {
       {mode === CREATE && (
         <Form
           interviewers={props.interviewers}
-          onSave={save}
+          onSave={handleSave}
           onCancel={() => back()}
         />
       )}
@@ -87,7 +88,7 @@ export default function Appointment(props) {
       {mode === CONFIRM && (
         <Confirm
           onCancel={() => back()}
-          onConfirm={() => deleteInterview(props.id)}
+          onConfirm={() => handleDelete(props.id)}
         />
       )}
       {mode === EDIT && (
@@ -95,7 +96,7 @@ export default function Appointment(props) {
           name={props.interview.student}
           interviewers={props.interviewers}
           interviewer={props.interview.interviewer.id}
-          onSave={save}
+          onSave={handleSave}
           onCancel={() => back()}
         />
       )}
