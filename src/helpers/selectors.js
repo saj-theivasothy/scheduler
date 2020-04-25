@@ -48,8 +48,6 @@ export function getInterview(interviewers, interview) {
  * returns the interviewers for the given day
  */
 export function getInterviewersForDay(days, interviewers, dayOfWeek) {
-  console.log(days);
-  console.log(interviewers);
   if (days.length === 0) return [];
 
   let interviewerIdsForDay;
