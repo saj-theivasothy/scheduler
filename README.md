@@ -7,6 +7,10 @@ Interview Scheduler is real time single-page app build using React, which lets t
 - User can edit an interview
 - Multiple clients can use the app at once and any changes made to interviews will be updated to each client in real time
 
+The app has been deployed to Netlify and can be accessed using the following link. It will take approx 30 secs to load the data.
+
+[Scheduler app](interview-scheduler-lhl1234.netlify.app)
+
 ## Tech Stack used
 
 Front-end
@@ -27,6 +31,7 @@ Testing
 - Cypress
 
 ## Final Product
+
 
 ## Setup
 
