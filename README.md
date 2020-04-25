@@ -31,7 +31,13 @@ Testing
 - Cypress
 
 ## Final Product
+!["Scheduler app"](https://github.com/sajinthan1994/scheduler/blob/master/public/images/Screenshot%202020-04-24%20at%2022.05.13.png?raw=true)
 
+!["Create new appointment"](https://github.com/sajinthan1994/scheduler/blob/master/public/images/Screenshot%202020-04-24%20at%2022.05.36.png?raw=true)
+
+!["Appointment view"](https://github.com/sajinthan1994/scheduler/blob/master/public/images/Screenshot%202020-04-24%20at%2022.06.32.png?raw=true)
+
+!["Deleting appointment"](https://github.com/sajinthan1994/scheduler/blob/master/public/images/Screenshot%202020-04-24%20at%2022.06.50.png?raw=true)
 
 ## Setup
 
