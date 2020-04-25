@@ -39,9 +39,10 @@ export default function useApplicationData() {
         }
       };
 
-      // makes requests to the endpoints on page load and
-      // calls the dispatch function with the data received
-      Promise.all([
+      /** makes requests to the endpoints on page load and
+       *  calls the dispatch function with the data received
+       */
+       Promise.all([
         Axios.get("/api/days"),
         Axios.get("/api/appointments"),
         Axios.get("/api/interviewers"),

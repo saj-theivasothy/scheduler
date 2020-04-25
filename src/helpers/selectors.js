@@ -1,8 +1,8 @@
-/** 
- * using the appointment ids from the days obj, 
+/**
+ * using the appointment ids from the days obj,
  *  returns the appointments for the given day
  */
- export function getAppointmentsForDay(days, appointments, dayOfWeek) {
+export function getAppointmentsForDay(days, appointments, dayOfWeek) {
   if (days.length === 0) return [];
 
   let appointmentIdsForDay;
@@ -26,11 +26,11 @@
   return appointmentsForDay;
 }
 
-/** 
- * using the interviewer id stored in the interview object, 
+/**
+ * using the interviewer id stored in the interview object,
  * returns the interview with interviewer data
  */
- export function getInterview(interviewers, interview) {
+export function getInterview(interviewers, interview) {
   if (!interview) return null;
 
   const interviewerId = interview.interviewer;
@@ -43,13 +43,13 @@
   }
 }
 
-/** 
- * using the interviewer ids from the days obj, 
+/**
+ * using the interviewer ids from the days obj,
  * returns the interviewers for the given day
  */
 export function getInterviewersForDay(days, interviewers, dayOfWeek) {
-  console.log(days)
-  console.log(interviewers)
+  console.log(days);
+  console.log(interviewers);
   if (days.length === 0) return [];
 
   let interviewerIdsForDay;

@@ -25,7 +25,6 @@ export default function Application(props) {
 
   // returns an array of appointment components
   const schedule = appointmentsForDay.map((appointment) => {
-    // 
     const interview = getInterview(state.interviewers, appointment.interview);
     const appointmentWithInterview = { ...appointment, interview };
     return (

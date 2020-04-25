@@ -37,23 +37,23 @@ describe("Application", () => {
     const appointments = getAllByTestId(container, "appointment");
     const appointment = appointments[0];
     fireEvent.click(getByAltText(appointment, "Add"));
-    
+
     fireEvent.change(getByPlaceholderText(appointment, "Enter Student Name"), {
       target: { value: "Dave Smith" },
     });
-    
+
     fireEvent.click(getByAltText(appointment, "Sylvia Palmer"));
-    
+
     fireEvent.click(getByText(appointment, "Save"));
     expect(getByText(appointment, "SAVING")).toBeInTheDocument();
-    
+
     await waitForElement(() => queryByText(appointment, "Dave Smith"));
     expect(queryByText(appointment, "Dave Smith")).toBeInTheDocument();
 
     const day = getAllByTestId(container, "day").find((day) =>
       queryByText(day, "Monday")
     );
-    
+
     expect(queryByText(day, "no spots remaining")).toBeInTheDocument();
   });
 

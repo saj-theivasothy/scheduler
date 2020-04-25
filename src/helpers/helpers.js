@@ -6,8 +6,8 @@ const DELETE = "DELETE";
 const SAVE = "SAVE";
 const EDIT = "EDIT";
 
-/** 
- * finds the given day in the days obj, 
+/**
+ * finds the given day in the days obj,
  * updates the spots for that day,
  * adds the day to the days obj,
  * returns the days obj
@@ -45,10 +45,10 @@ function getOperation(appointments, appointmentId, interview) {
         return EDIT;
       } else if (interview && !booking.interview) {
         return SAVE;
-      } else if(booking.interview && !interview) {
+      } else if (booking.interview && !interview) {
         return DELETE;
+      }
     }
-    } 
   }
 }
 
@@ -70,17 +70,17 @@ function reducer(state, action) {
 
   /**
    * updates the appointments state using the interview data received from dispatch
-   * updates the spots in the days state using the data received from dispatch 
+   * updates the spots in the days state using the data received from dispatch
    */
-   if (action.type === SET_INTERVIEW) {
+  if (action.type === SET_INTERVIEW) {
     let appointments = state.appointments;
     const appointmentId = action.appointmentId;
     const interview = action.interview ? { ...action.interview } : null;
-    
+
     const operation = getOperation(appointments, appointmentId, interview);
 
     const updatedDays = updateSpots(state.days, state.day, operation);
-    
+
     const appointment = {
       ...state.appointments[appointmentId],
       interview,
@@ -95,4 +95,4 @@ function reducer(state, action) {
   }
 }
 
-export { reducer, SET_DAY, SET_APPLICATION_DATA, SET_INTERVIEW }
+export { reducer, SET_DAY, SET_APPLICATION_DATA, SET_INTERVIEW };

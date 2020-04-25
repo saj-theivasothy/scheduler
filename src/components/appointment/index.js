@@ -28,13 +28,13 @@ export default function Appointment(props) {
 
   useEffect(() => {
     if (!props.interview && mode === SHOW) {
-     transition(EMPTY);
+      transition(EMPTY);
     }
 
     if (props.interview && mode === EMPTY) {
       transition(SHOW);
     }
-   }, [props.interview, transition, mode]);
+  }, [props.interview, transition, mode]);
 
   function save(name, interviewer) {
     const interview = {
