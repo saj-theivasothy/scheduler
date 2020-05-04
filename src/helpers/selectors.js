@@ -1,29 +1,25 @@
 /**
- * using the appointment ids from the days obj,
- *  returns the appointments for the given day
+ * using the entry ids from the days obj,
+ * returns the entries for the given day
  */
-export function getAppointmentsForDay(days, appointments, dayOfWeek) {
+export function getEntriesForDay(days, entries, dayOfWeek, entry) {
   if (days.length === 0) return [];
+  
+  const selectedDay = days.find(day => day.name === dayOfWeek)
 
-  let appointmentIdsForDay;
+  if (!selectedDay) return [];
 
-  for (const day of days) {
-    if (day.name === dayOfWeek) {
-      appointmentIdsForDay = day.appointments;
-    }
-  }
+  const entryIdsForDay = selectedDay[entry];
 
-  if (!appointmentIdsForDay) return [];
+  const entriesForDay = [];
 
-  const appointmentsForDay = [];
-
-  appointmentIdsForDay.forEach((appointmentId) => {
-    if (appointmentId in appointments) {
-      appointmentsForDay.push(appointments[appointmentId]);
+  entryIdsForDay.forEach((entryId) => {
+    if (entryId in entries) {
+      entriesForDay.push(entries[entryId]);
     }
   });
 
-  return appointmentsForDay;
+  return entriesForDay;
 }
 
 /**
@@ -43,27 +39,3 @@ export function getInterview(interviewers, interview) {
   }
 }
 
-/**
- * using the interviewer ids from the days obj,
- * returns the interviewers for the given day
- */
-export function getInterviewersForDay(days, interviewers, dayOfWeek) {
-  if (days.length === 0) return [];
-
-  let interviewerIdsForDay;
-  for (const day of days) {
-    if (day.name === dayOfWeek) {
-      interviewerIdsForDay = day.interviewers;
-    }
-  }
-
-  if (!interviewerIdsForDay) return [];
-
-  const interviewersForDay = [];
-  interviewerIdsForDay.forEach((interviewerId) => {
-    if (interviewerId in interviewers) {
-      interviewersForDay.push(interviewers[interviewerId]);
-    }
-  });
-  return interviewersForDay;
-}
