@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@testing-library/dom": "^7.2.1",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "classnames": "^2.2.6",
     "cypress": "^4.4.1",
     "global": "^4.4.0",
